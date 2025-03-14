@@ -1,3 +1,4 @@
+La empresa es una distribuidora de Licores en Reino Unido, con 80 locales distribuidos en 68 ciudades. 
 # Analisis-Inventario
 ## Base SQL
 ### 1. ETL y Armado de Base en SQL

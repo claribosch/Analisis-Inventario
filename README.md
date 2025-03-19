@@ -1,5 +1,9 @@
-La empresa es una distribuidora de Licores en Reino Unido, con 80 locales distribuidos en 68 ciudades. 
+La empresa es una distribuidora de Licores en Reino Unido, con 80 locales distribuidos en 68 ciudades.  
+
 # Analisis-Inventario
+Tenemos una Base de ventas con dos meses de Ventas : Enero y Febrero 2016.
+Una Base de compras con un año de registros : Febrero 2016 a Febrero 2017.
+La de Inventario Final tiene Fecha 31/12/2016 , y la de Inventario Inicial 01/01/2016.
 ## Base SQL
 ### 1. ETL y Armado de Base en SQL
    #### Se analizaron las Bases de Datos, se buscaron nulos y faltantes. Se buscaron las relaciones entre las tablas, los identificadores únicos para establecer claves primarias de cada tabla. Se buscaron los tipos de datos y se cambiaron los datos correspondientes a Fecha.
@@ -12,6 +16,14 @@ La empresa es una distribuidora de Licores en Reino Unido, con 80 locales distri
    #### Se crearon las bases de datos en Phyton, reagrupando y corrigiendo datos, que respondan al diagrama ER.
    #### Se insertaron los datos con la función BULK INSERT desde SQL.
 ### 2. EDA
+      1. De 68 ciudades solo 6 tienen mas de un store, y lo máximo son 4 store en la ciudad de Hornsey.
+      2. Los store son 80.
+      3. Todos los stores, trabajan con ambos tipos de productos:licores y vinos
+      4. Los vinos representan el 70% de los prodcutos vendidos, sin embargo, son el 40% de la facturación. Si bien la cantidad vendida es mucho mayor en los vinos, mantienen niveles más bajos de stock en relación  su venta, en el stock final representa cada uno aprx el 50%. Es llamativo el nivel de stock en unidades de los licores, siendo que se venden menos y son los más caros. 
+      La venta cae abruptamente en Febrero 2016.
+      
+1er tema a analizar = Nivel Stock licores. 
+
 ### 3. Insights
    
 

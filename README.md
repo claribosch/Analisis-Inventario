@@ -1,9 +1,13 @@
 La empresa es una distribuidora de Licores en Reino Unido, con 80 locales distribuidos en 68 ciudades.  
-
-# Analisis-Inventario
 Tenemos una Base de ventas con dos meses de Ventas : Enero y Febrero 2016.
 Una Base de compras con un año de registros : Febrero 2016 a Febrero 2017.
 La de Inventario Final tiene Fecha 31/12/2016 , y la de Inventario Inicial 01/01/2016.
+Dado que las fechas de las bases de ventas y las fechas de Inventario y compra , no coinciden,
+el análisis se centrará en estos últimos, que nos proveen un ejercicio completo.
+El dashboard final está orientado al área de Compras y Gestión de Inventarios, y es un adashboard de gestión con KPI's y datos puntuales de ese éstas áreas.
+
+# Analisis-Inventario
+
 ## Base SQL
 ### 1. ETL y Armado de Base en SQL
    #### Se analizaron las Bases de Datos, se buscaron nulos y faltantes. Se buscaron las relaciones entre las tablas, los identificadores únicos para establecer claves primarias de cada tabla. Se buscaron los tipos de datos y se cambiaron los datos correspondientes a Fecha.

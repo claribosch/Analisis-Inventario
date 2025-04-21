@@ -80,6 +80,126 @@ select
 	min(SalesDate) as fechainicial
 from Sales
 
+select *
+	--Max(PODate) as fechafinal
+from InventoriesFinal
+
+
+
+--Analisis Global de 1 producto = 1000
+
+select 
+	*
+from
+	(Select *
+	from
+		InventoriesFinal AS IFinal
+	LEFT JOIN
+		Inventories AS I
+	ON
+		I.InventoryID = IFinal.InventoryId) as Subconsulta
+where  Brand = '1000'
+
+SELECT 
+    *,
+	(StockInicial+Compras-StockFinal) as VentasCalculadas
+FROM
+    (SELECT 
+		I.Brand,
+		sum(IPD.Quantity) as Compras,
+		sum(IFInal.OnHand) as StockFinal,
+		sum(II.OnHand) as StockInicial
+     FROM
+         InventoriesFinal AS IFinal
+     LEFT JOIN
+         Inventories AS I
+     ON
+         I.InventoryID = IFinal.InventoryId
+	LEFT JOIN
+		InventoriesInitial AS II
+	ON
+		IFinal.InventoryId = II.InventoryID
+	LEFT JOIN
+		InvoicePurchasesDetails AS IPD
+	ON
+		IFinal.InventoryId = IPD.InventoryID
+	Group by I.Brand) AS SubQuery
+WHERE 
+    Brand = '1001';
+
+select 
+ COUNT(InVENTORYID) AS CantidadCodigos,
+ Sum(onHAnd) as StockFinal
+from
+InventoriesFinal
+where InventoryId LIKE '%1001%' AND InventoryId NOT LIKE '%21001%' AND InventoryId NOT LIKE '%10010%' and InventoryId NOT LIKE '%10011%'
+
+CREATE VIEW InventorySummary AS
+
+WITH ComprasPorBrand AS (SELECT 
+		I.Brand,
+		sum(COALESCE(IPD.Quantity,0)) as compras
+     FROM
+         InvoicePurchasesDetails AS IPD
+     LEFT JOIN
+         Inventories AS I
+     ON
+         I.InventoryID = IPD.InventoryId
+GROUP BY I.Brand),
+StockInicialPorBrand AS (SELECT 
+		I.Brand,
+		sum(COALESCE(Ii.OnHand,0)) as StockInicial
+     FROM
+         InventoriesInitial AS II
+     LEFT JOIN
+         Inventories AS I
+     ON
+         I.InventoryID = II.InventoryId
+GROUP BY I.Brand),
+StockFinalPorBrand AS (SELECT 
+		I.Brand,
+		sum(COALESCE(IFInal.OnHand,0)) as StockFinal
+     FROM
+         InventoriesFinal AS IFinal
+     LEFT JOIN
+         Inventories AS I
+     ON
+         I.InventoryID = IFinal.InventoryId
+GROUP BY I.Brand
+)
+	
+SELECT
+    SI.Brand,
+    COALESCE(SI.StockInicial,0) as StockInicial,
+    COALESCE(SF.StockFinal,0) as StockFinal,
+    COALESCE(C.Compras,0) as Compras,
+	COALESCE(SI.StockInicial,0)+COALESCE(C.Compras,0)-COALESCE(SF.StockFinal,0) as Ventas
+FROM
+    StockInicialPorBrand AS SI
+LEFT JOIN
+    StockFinalPorBrand AS SF
+ON
+    SI.Brand = SF.Brand
+LEFT JOIN
+    ComprasPorBrand AS C
+ON
+    SI.Brand = C.Brand
+
+select
+ *
+ from
+ InventorySummary
+ where Brand = 1001
+
+ select 
+	sum(Stockinicial) as StockinicialTotal,
+	sum(StockFInal) as StockFInalTotal,
+	sum(Compras) as ComprasTotal,
+	sum(Ventas) as VentasTotal
+from
+InventorySummary
+
+select * from InvoicePurchasesDetails
 --ciiudades que mas venden
 SELECT COUNT(*)FROM Stores
 SELECT * FROM Sales
@@ -140,5 +260,39 @@ select
 
 from
 	VentaPromxCityyStore
+
+
+--VER SI EN  TODOS LOS STORES ESTAN AMBAS CLASIFICACIONES
+
+Select 
+	I.Store,
+	COUNT(distinct B.Clasification) as ClasificacionesTrabajadas
+from 
+	Inventories as I
+LEFT JOIN
+	Brands as B
+ON
+	I.Brand = B.Brand
+GROUP BY 
+	I.Store
+ORDER BY
+		ClasificacionesTrabajadas ASC
+
+
+Select 
+	I.Store,
+	COUNT(distinct B.Clasification) as ClasificacionesTrabajadas
+from 
+	Inventories as I
+LEFT JOIN
+	Brands as B
+ON
+	I.Brand = B.Brand
+GROUP BY 
+	I.Store
+HAVING 
+	COUNT(distinct B.Clasification) <2
+ORDER BY
+		I.Store DESC
 
 	
